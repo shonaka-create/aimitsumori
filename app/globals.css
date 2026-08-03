@@ -108,3 +108,6 @@
 
 /* The fifth example is not a priority item; keep every proof card visually equal. */
 .proofTags div:last-child{grid-column:auto;background:#fff;border-color:#b8ccef;color:var(--ink)}.proofTags div:last-child b{color:var(--blue)}
+
+/* Separate question and answer markers for faster FAQ scanning. */
+.faq summary>b{color:var(--blue)}.faq details p>b{color:#0b8f9d}
