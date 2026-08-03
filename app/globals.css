@@ -84,3 +84,9 @@
 
 /* On desktop, reserve more breathing room for the value proposition than the embedded form. */
 @media(min-width:1251px){.heroGrid{grid-template-columns:minmax(0,1fr) clamp(340px,27vw,370px);gap:clamp(56px,6vw,96px)}.googleEmbed{justify-self:end;width:100%}.heroCopy .lead{max-width:780px}}
+
+/* Google Forms cannot be styled internally. On phones, scale the embed itself so more fields fit in a shorter, calmer frame. */
+@media(max-width:768px){.googleEmbed{height:clamp(470px,66svh,540px);overflow:hidden}.googleEmbed iframe{width:125%;height:125%;transform:scale(.8);transform-origin:top left}}
+
+/* Mid-page conversion point after the comparison journey. */
+.gapCta{display:flex;align-items:center;justify-content:space-between;width:min(420px,100%);margin-top:6px;padding:17px 20px;background:#fff;color:var(--navy);font-size:16px;font-weight:800}.gapCta b{font-size:22px;line-height:1}@media(max-width:768px){.gapCta{width:100%;margin-top:2px;padding:16px;font-size:15px}}
