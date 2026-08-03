@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./product.css";
 
 type Menu = "ホーム" | "相談する" | "相談履歴" | "設定";
@@ -63,6 +63,7 @@ export default function ProductPage() {
   const [saved, setSaved] = useState(false);
   const [toast, setToast] = useState("");
   const [hydrated, setHydrated] = useState(false);
+  const chatLogRef = useRef<HTMLDivElement>(null);
   const suggestions = useMemo(() => recommend(submitted || issue, topic), [submitted, issue, topic]);
   const current = suggestions[Math.min(selected, suggestions.length - 1)];
   const hasDraft = Boolean(submitted);
@@ -92,6 +93,13 @@ export default function ProductPage() {
     window.localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
   }, [hydrated, saveOnDevice, submitted, topic, selected, history]);
   useEffect(() => { if (!toast) return; const timer = window.setTimeout(() => setToast(""), 2800); return () => window.clearTimeout(timer); }, [toast]);
+  useEffect(() => {
+    if (active !== "相談する") return;
+    const chat = chatLogRef.current;
+    if (!chat) return;
+    const frame = window.requestAnimationFrame(() => chat.scrollTo({ top: chat.scrollHeight, behavior: "smooth" }));
+    return () => window.cancelAnimationFrame(frame);
+  }, [active, topic, questionIndex, answers]);
 
   const detectTopic = (text: string) => /受発注|発注|転記|注文/.test(text) ? "受発注" : /日報|現場|報告/.test(text) ? "日報" : /見積|原価|案件/.test(text) ? "見積もり" : "その他";
   const startInterview = (text: string) => {
@@ -121,11 +129,11 @@ export default function ProductPage() {
   return <main className="productShell">
     <aside className="productSidebar"><a className="productBrand" href="/" aria-label="ととのえAI トップへ"><img src="/favicon.svg" alt="" /><b>ととのえAI</b></a><nav>{menu.map((item) => <button type="button" key={item.label} className={active === item.label ? "active" : ""} onClick={() => setActive(item.label)}><i>{item.icon}</i>{item.label}</button>)}</nav><small className="localStatus">{saveOnDevice ? "この端末に保存中" : "保存しない"}</small></aside>
     <section className="productMain"><header className="productHeader"><h1>{title[active]}</h1><button type="button" className="help" onClick={() => { setActive("相談する"); setToast("選択肢を選ぶだけで相談できます"); }}>？</button></header>
-      {active === "ホーム" && <section className="homeView"><div className="homeHero"><span>{hasDraft ? "いま決めること" : "はじめる"}</span><h2>{hasDraft ? current.title : "困っている仕事を、ひとつ。"}</h2><p>{hasDraft ? current.detail : "仕様書はいりません。"}</p><button type="button" onClick={() => setActive("相談する")}>{hasDraft ? "続きを開く" : "相談を始める"}<b>→</b></button></div><div className="homeGrid"><article><span>進み具合</span><strong>{saved ? "100" : hasDraft ? "60" : "0"}<i>%</i></strong></article><article><span>保存した相談</span><strong>{history.length}<i>件</i></strong></article><article><span>まずやること</span><strong className="word">{hasDraft ? current.label : "―"}</strong></article></div>{history.length > 0 && <button type="button" className="recent" onClick={() => setActive("相談履歴")}><span>最近の相談</span><b>{history[0].topic}</b><i>→</i></button>}</section>}
+      {active === "ホーム" && <section className="homeView"><div className="homeHero"><span>{hasDraft ? "いま決めること" : "まずは相談する"}</span><h2>{hasDraft ? current.title : "いま困っている仕事を、教えてください。"}</h2><p>{hasDraft ? current.detail : "まとまった資料や仕様書がなくても大丈夫です。"}</p><button type="button" onClick={() => setActive("相談する")}>{hasDraft ? "続きを開く" : "相談を始める"}<b>→</b></button></div><div className="homeGrid"><article><span>進み具合</span><strong>{saved ? "100" : hasDraft ? "60" : "0"}<i>%</i></strong></article><article><span>保存した相談</span><strong>{history.length}<i>件</i></strong></article><article><span>まずやること</span><strong className="word">{hasDraft ? current.label : "―"}</strong></article></div>{history.length > 0 && <button type="button" className="recent" onClick={() => setActive("相談履歴")}><span>最近の相談</span><b>{history[0].topic}</b><i>→</i></button>}</section>}
       {active === "相談する" && <section className="workView">
         {!hasDraft && <div className="consultation">
           <div className="consultationTop"><span>AIヒアリング</span>{topic && <button type="button" onClick={goBack}>← 戻る</button>}</div>
-          <div className="chatLog">
+          <div className="chatLog" ref={chatLogRef} aria-live="polite">
             <div className="botBubble"><i>整</i><p>こんにちは。まず、困っている仕事をそのまま教えてください。</p></div>
             {answers[0] && <div className="userBubble">{answers[0]}</div>}
             {questions.slice(0, Math.max(0, questionIndex)).map((question, index) => <div className="chatPair" key={question.prompt}><div className="botBubble"><i>整</i><p>{question.prompt}</p></div><div className="userBubble">{answers[index + 1]}</div></div>)}
