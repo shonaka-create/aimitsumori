@@ -111,3 +111,6 @@
 
 /* Separate question and answer markers for faster FAQ scanning. */
 .faq summary>b{color:var(--blue)}.faq details p>b{color:#0b8f9d}
+
+/* Make the three reassurance points in the first view unmistakable. */
+.trust{display:grid;grid-template-columns:repeat(3,max-content);gap:10px;margin-top:28px;color:#fff}.trust span{display:flex;align-items:center;gap:8px;min-height:44px;padding:10px 13px;border:1px solid rgba(118,210,255,.52);background:rgba(118,210,255,.1);font-size:15px;font-weight:800;line-height:1.2}.trust span:before{display:grid;place-items:center;width:19px;height:19px;flex:0 0 auto;border-radius:50%;background:var(--cyan);color:var(--navy);content:"✓";font:900 13px/1 Arial,sans-serif}@media(max-width:768px){.trust{grid-template-columns:repeat(2,max-content);gap:8px;margin-top:24px}.trust span{min-height:41px;padding:9px 11px;font-size:14px}.trust span:last-child{grid-column:1/-1}}@media(max-width:390px){.trust{grid-template-columns:1fr}.trust span:last-child{grid-column:auto}}
