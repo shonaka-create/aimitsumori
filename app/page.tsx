@@ -54,6 +54,14 @@ export default function Home({ initialTarget }: { initialTarget?: string }) {
     { category: "情報の整理", issue: `${segment.proof[0]}と${segment.proof[1]}の確認に時間がかかり、対応状況が見えにくい。`, proposal: `${segment.proof[0]}と${segment.proof[1]}を、同じ流れで確認できる仕組み。` },
     { category: "引き継ぎ", issue: `${segment.proof[2]}の手順が担当者ごとに違い、次の人へ渡しにくい。`, proposal: `${segment.proof[2]}の手順をそろえ、誰でも確認できる仕組み。` },
   ];
+  const workExamples = [
+    { tag: "探す", title: `${segment.proof[0]}で、過去の記録を探し回る。`, detail: "必要な情報が、担当者のメール・Excel・記憶に散らばっている。" },
+    { tag: "確認", title: `${segment.proof[1]}で、何度も確認が必要になる。`, detail: "誰に聞けばよいか分からず、返事を待つ時間が増えている。" },
+    { tag: "見えない", title: `${segment.proof[2]}の進み具合が分からない。`, detail: "いま誰が何をしているのか、聞かないと分からない。" },
+    { tag: "頼りきり", title: `${segment.proof[3]}のやり方が、担当者の頭の中にある。`, detail: "急な休みや引き継ぎのとき、仕事の進め方が止まってしまう。" },
+    { tag: "転記", title: `${segment.proof[4]}を、複数の表に転記している。`, detail: "同じ内容を何度も入力し、入力漏れや見落としが起きやすい。" },
+    { tag: "後回し", title: "改善したいのに、忙しくて手を付けられない。", detail: "目の前の対応に追われ、仕組みを整える時間が取れていない。" },
+  ];
   return <main>
     <header className="siteHeader"><div className="nav wrap"><a className="brand" href="#top" aria-label="ととのえAI ホーム"><span className="brandMark" aria-hidden="true">AI</span><span>ととのえAI<small>AI業務改善・概算相談</small></span></a><nav aria-label="ページ内メニュー"><a href="#benefits">相談でわかること</a><a href="#challenge">課題</a><a href="#solution">解決方法</a><a href="#flow">進め方</a><a href="#comparison">他との違い</a><a href="#faq">よくある質問</a><a className="navCta" href="#contact">無料で相談する <b>→</b></a></nav></div></header>
 
@@ -63,7 +71,7 @@ export default function Home({ initialTarget }: { initialTarget?: string }) {
 
     <section className="proof"><div className="wrap proofInner"><div className="proofLabel"><p>まずは、困っている仕事を整理します</p><h2>{segment.area}の{segment.industry}なら、<em>{segment.example}</em>から見直せます。</h2></div><div className="proofTags">{segment.proof.map((item, index) => <div key={item}><b>0{index + 1}</b><span>{item}</span></div>)}</div></div></section>
 
-    <section className="storyLead wrap section" id="challenge"><p className="eyebrow dark">今の業務を見直す</p><h2>こんな仕事が、<em>人に頼りきり</em>になっていませんか？</h2><p className="sectionLead">{segment.example}。いつもの仕事ほど、やり方が決まっているようで、実は担当者の経験に支えられています。まずは、時間がかかる仕事・確認が必要な仕事を整理します。</p></section>
+    <section className="storyLead wrap section" id="challenge"><p className="eyebrow dark">今の業務を見直す</p><h2>こんな仕事が、<em>人に頼りきり</em>になっていませんか？</h2><p className="sectionLead">{segment.example}。いつもの仕事ほど、やり方が決まっているようで、実は担当者の経験に支えられています。</p><div className="workExamples" aria-label="見直しやすい仕事の例">{workExamples.map((item, index) => <article key={item.title}><span>{String(index + 1).padStart(2, "0")}</span><small>{item.tag}</small><h3>{item.title}</h3><p>{item.detail}</p></article>)}</div><div className="workExamplesFoot"><span>ひとつでも当てはまれば、まずは話してみてください。</span><a href="#contact">無料で業務を整理する <b>→</b></a></div></section>
 
     <section className="future section"><div className="wrap"><p className="eyebrow">そのままにすると</p><h2>仕事が<em>特定の人に残り続けます。</em></h2><div className="riskGrid"><article><span>01 / 返事が遅れる</span><h3>確認する人がいないと、次の対応へ進めない。</h3><p>担当者が不在だと見積もりや回答が止まり、対応のスピードが落ちます。</p></article><article><span>02 / 引き継げない</span><h3>経験で回していた仕事は、次の人へ渡りにくい。</h3><p>Excelや口頭に隠れたルールは、引き継ぎのたびに説明が必要になります。</p></article><article><span>03 / 改善が進まない</span><h3>目の前の仕事に追われ、仕組みを整える時間がない。</h3><p>忙しい状態が続くほど、改善したい仕事は後回しになります。</p></article></div></div></section>
 
