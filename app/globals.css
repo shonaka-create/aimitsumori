@@ -90,3 +90,6 @@
 
 /* Mid-page conversion point after the comparison journey. */
 .gapCta{display:flex;align-items:center;justify-content:space-between;width:min(420px,100%);margin-top:6px;padding:17px 20px;background:#fff;color:var(--navy);font-size:16px;font-weight:800}.gapCta b{font-size:22px;line-height:1}@media(max-width:768px){.gapCta{width:100%;margin-top:2px;padding:16px;font-size:15px}}
+
+/* Keep the consultation CTA visually anchored under its message at every width. */
+.promiseIntro a{display:flex;width:min(440px,100%);justify-content:space-between;gap:16px;margin:34px auto 0;padding:17px 20px;text-align:left}.promiseIntro a b{flex:0 0 auto}@media(max-width:768px){.promiseIntro a{width:100%;margin-top:27px;padding:16px}}
