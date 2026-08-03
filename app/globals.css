@@ -38,3 +38,72 @@
 /* Conversion essentials: explicit deliverables, a concrete industry case, and risk-reduction. */
 .benefits{padding:112px 0;background:#fff}.benefits h2,.consultation h2{font-size:clamp(42px,4.8vw,72px);line-height:1.24;letter-spacing:-.055em;margin:0 0 46px;max-width:930px}.benefits h2 em,.consultation h2 em{font-style:normal;color:var(--blue)}.benefitGrid,.consultationGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#c3d0df;border:1px solid #c3d0df}.benefitGrid article,.consultationGrid article{position:relative;background:#fff;padding:35px;min-height:270px}.benefitGrid span,.consultationGrid span{display:block;font-family:"DM Sans",Arial,sans-serif;font-size:clamp(36px,3vw,50px);font-weight:700;line-height:1;color:var(--blue)}.benefitGrid h3,.consultationGrid h3{font-size:25px;line-height:1.4;letter-spacing:-.035em;margin:30px 0 13px}.benefitGrid p,.consultationGrid p{font-size:16px;line-height:1.85;color:var(--muted);margin:0}.caseLabel{margin-top:64px}.caseLabel p{font-size:17px;font-weight:800;color:var(--blue);margin:0 0 9px}.caseLabel h3{font-size:clamp(28px,3vw,42px);line-height:1.35;letter-spacing:-.04em;margin:0}.beforeAfter{margin-top:22px}.consultation{background:#eaf2ff}.consultationGrid article{background:#f9fbff}.operatorNote{margin:26px 0 0;font-size:16px;line-height:1.8;color:var(--muted)}
 @media(max-width:800px){.benefits{padding:82px 0}.benefits h2,.consultation h2{font-size:38px;margin-bottom:30px}.benefitGrid,.consultationGrid{grid-template-columns:1fr}.benefitGrid article,.consultationGrid article{min-height:0;padding:29px}.benefitGrid h3,.consultationGrid h3{font-size:23px;margin:22px 0 9px}.caseLabel{margin-top:42px}.caseLabel h3{font-size:28px}.operatorNote{font-size:15px}}
+
+/* Layout stabilization: keep the navigation and Japanese headlines readable at every width. */
+.siteHeader{position:relative;z-index:20;width:100%;background:var(--navy);color:#fff;border-bottom:1px solid rgba(255,255,255,.1)}
+.siteHeader .nav{height:86px;width:min(1320px,calc(100% - 64px));margin:0 auto;background:transparent;gap:28px}
+.brand{display:flex;align-items:center;gap:11px;flex:0 0 auto;letter-spacing:-.035em;font-size:20px;line-height:1.08;white-space:nowrap}
+.brandMark{width:34px;height:34px;display:grid;place-items:center;background:var(--cyan);color:var(--navy);font-family:Arial,sans-serif;font-size:11px;font-weight:900;letter-spacing:-.08em}
+.brand small{font-size:7px;letter-spacing:.18em;line-height:1.3;margin-top:5px}
+.siteHeader nav{min-width:0;margin-left:auto;gap:clamp(12px,1.25vw,22px);font-size:13px}
+.siteHeader nav>a:not(.navCta){white-space:nowrap;font-size:13px}
+.siteHeader .navCta{display:flex;align-items:center;gap:16px;flex:0 0 auto;padding:14px 18px;color:var(--navy);font-size:14px;line-height:1;white-space:nowrap}
+.siteHeader .navCta b{font-size:18px;line-height:1}
+.heroGrid{grid-template-columns:minmax(0,1.12fr) minmax(400px,.88fr);gap:clamp(42px,5vw,76px);min-height:640px}
+.hero h1{max-width:none;font-size:clamp(48px,4.45vw,72px);line-height:1.18;letter-spacing:-.065em;text-wrap:pretty;word-break:keep-all}
+.heroCopy .lead{max-width:720px;font-size:18px;line-height:1.75;word-break:keep-all}
+.section h2,.flow h2,.bottomCta h2,.proofLabel h2,.benefits h2,.consultation h2{max-width:1100px;text-wrap:pretty;word-break:keep-all;overflow-wrap:normal}
+.section h2,.flow h2,.bottomCta h2{font-size:clamp(40px,4.25vw,66px);line-height:1.22}
+.sectionLead,.storyLead{word-break:keep-all;overflow-wrap:normal}
+
+@media(max-width:1150px){
+  .siteHeader .nav{width:calc(100% - 48px);gap:18px}
+  .siteHeader nav{gap:12px}
+  .siteHeader nav>a:not(.navCta){font-size:12px}
+  .siteHeader .navCta{padding:13px 15px;font-size:13px}
+  .heroGrid{grid-template-columns:minmax(0,1fr) minmax(360px,.8fr);gap:40px}
+  .hero h1{font-size:clamp(46px,4.7vw,64px)}
+}
+
+@media(max-width:900px){
+  .siteHeader .nav{height:72px;width:calc(100% - 32px)}
+  .siteHeader nav>a:not(.navCta){display:none}
+  .siteHeader .navCta{padding:12px 15px}
+  .heroGrid{grid-template-columns:1fr;min-height:auto;padding:72px 0 52px;gap:38px}
+  .hero h1{font-size:clamp(44px,9.5vw,64px);max-width:780px;text-wrap:pretty}
+  .heroCopy .lead{font-size:17px;line-height:1.7}
+}
+
+@media(max-width:560px){
+  .siteHeader .nav{height:66px;width:calc(100% - 28px)}
+  .brand{gap:8px;font-size:16px}
+  .brandMark{width:29px;height:29px;font-size:9px}
+  .brand small{font-size:6px;letter-spacing:.12em;margin-top:3px}
+  .siteHeader .navCta{padding:11px 12px;font-size:12px;gap:8px}
+  .siteHeader .navCta b{display:none}
+  .heroGrid{padding-top:58px}
+  .hero h1{font-size:clamp(42px,12vw,56px);line-height:1.2;letter-spacing:-.07em}
+  .heroCopy .lead{font-size:16px;line-height:1.8}
+  .section h2,.flow h2,.bottomCta h2{font-size:clamp(34px,9.5vw,46px);line-height:1.28;letter-spacing:-.045em}
+}
+
+@media(min-width:901px){
+  .section h2,.flow h2,.bottomCta h2{max-width:none;font-size:clamp(34px,3.45vw,50px);white-space:nowrap;letter-spacing:-.055em}
+}
+.yFloat{padding:10px;gap:0}
+.yFloat .floatContact{min-width:330px;align-items:center;background:#fff;color:var(--navy);text-align:center}
+.yFloat .floatContact small{font-size:.68rem}
+.yFloat .floatContact strong{font-size:1rem}
+.yFloat .floatContact b{margin-left:12px;font-size:1.2em}
+@media(max-width:720px){.yFloat .floatContact{min-width:0}.yFloat .floatContact strong{font-size:.9rem}}
+
+/* A connected timeline makes the consultation process read as one journey. */
+.steps.timeline{display:grid;grid-template-columns:minmax(0,1fr) 82px minmax(0,1fr) 82px minmax(0,1fr);gap:0;margin-top:54px;background:transparent;border:0}
+.steps.timeline article{min-height:330px;padding:34px 32px;background:#103452;border:1px solid rgba(118,210,255,.38);position:relative}
+.steps.timeline article>span{display:block;color:var(--cyan);font-family:"DM Sans",Arial,sans-serif;font-size:14px;letter-spacing:.12em;font-weight:700}
+.steps.timeline .stepIcon{width:60px;height:60px;margin:31px 0 24px;border-color:rgba(118,210,255,.55);color:#fff;background:#0a2745}
+.steps.timeline h3{font-size:24px;line-height:1.35;margin:0 0 13px}
+.steps.timeline p{font-size:15px;line-height:1.8;margin:0;color:#c4d5e4}
+.flowArrow{position:relative;z-index:1;display:grid;place-items:center;align-self:center;height:100%;color:var(--cyan);font-family:Arial,sans-serif;font-size:42px;font-weight:300}
+.flowArrow i{position:absolute;z-index:-1;left:-1px;right:-1px;top:50%;height:1px;background:rgba(118,210,255,.7)}
+@media(max-width:900px){.steps.timeline{grid-template-columns:1fr;gap:0}.steps.timeline article{min-height:0;padding:30px}.flowArrow{height:58px;font-size:34px;transform:rotate(90deg)}.flowArrow i{left:50%;right:auto;top:-1px;bottom:-1px;width:1px;height:auto}}
