@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "./product.css";
 
-type Menu = "ホーム" | "業務を整理する" | "相談履歴" | "設定";
+type Menu = "ホーム" | "相談する" | "相談履歴" | "設定";
 type Task = { key: string; label: string; title: string; detail: string; estimate: string; outcome: string };
 type Draft = { issue: string; topic: string; selected: number };
 type HistoryItem = Draft & { id: string; createdAt: number };
@@ -12,7 +12,7 @@ type Question = { prompt: string; hint: string; options: string[] };
 const DRAFT_KEY = "totonoe-ai-draft-v1";
 const HISTORY_KEY = "totonoe-ai-history-v1";
 const SETTING_KEY = "totonoe-ai-save-on-device";
-const menu: { label: Menu; icon: string }[] = [{ label: "ホーム", icon: "⌂" }, { label: "業務を整理する", icon: "✦" }, { label: "相談履歴", icon: "◷" }, { label: "設定", icon: "⚙" }];
+const menu: { label: Menu; icon: string }[] = [{ label: "ホーム", icon: "⌂" }, { label: "相談する", icon: "✦" }, { label: "相談履歴", icon: "◷" }, { label: "設定", icon: "⚙" }];
 const tasks: Task[] = [
   { key: "estimate", label: "見積もり", title: "見積もりをそろえる", detail: "聞き取りから見積書まで。", estimate: "1〜2週間で型を整理", outcome: "誰でも同じ流れで見積もれる" },
   { key: "order", label: "受発注", title: "転記を減らす", detail: "同じ情報は一度だけ入力。", estimate: "帳票と入力項目を整理", outcome: "受注から発注まで追える" },
@@ -67,6 +67,7 @@ export default function ProductPage() {
   const hasDraft = Boolean(submitted);
   const questions = questionSets[topic] || [];
   const currentQuestion = questions[questionIndex];
+  const answerSummary = answers.length ? answers : (submitted.split("：")[1]?.split("／") || []);
 
   useEffect(() => {
     try {
@@ -106,27 +107,27 @@ export default function ProductPage() {
     setTopic(""); setQuestionIndex(-1); setAnswers([]);
   };
   const restart = () => { setTopic(""); setQuestionIndex(-1); setAnswers([]); setIssue(""); setSubmitted(""); setSaved(false); };
-  const open = (item: HistoryItem) => { setIssue(item.issue); setSubmitted(item.issue); setTopic(item.topic); setQuestionIndex(-1); setAnswers([]); setSelected(item.selected); setSaved(false); setActive("業務を整理する"); };
+  const open = (item: HistoryItem) => { setIssue(item.issue); setSubmitted(item.issue); setTopic(item.topic); setQuestionIndex(-1); setAnswers([]); setSelected(item.selected); setSaved(false); setActive("相談する"); };
   const clearAll = () => { [DRAFT_KEY, HISTORY_KEY].forEach((key) => window.localStorage.removeItem(key)); setHistory([]); restart(); setToast("消去しました"); };
   const changeSaving = (enabled: boolean) => { setSaveOnDevice(enabled); if (!enabled) { [DRAFT_KEY, HISTORY_KEY].forEach((key) => window.localStorage.removeItem(key)); setHistory([]); } setToast(enabled ? "この端末に保存します" : "端末保存を停止しました"); };
-  const title: Record<Menu, string> = { "ホーム": "次に整える仕事", "業務を整理する": "業務を整理する", "相談履歴": "相談履歴", "設定": "設定" };
+  const title: Record<Menu, string> = { "ホーム": "次にやること", "相談する": "相談する", "相談履歴": "相談履歴", "設定": "設定" };
 
   return <main className="productShell">
     <aside className="productSidebar"><a className="productBrand" href="/" aria-label="ととのえAI トップへ"><img src="/favicon.svg" alt="" /><b>ととのえAI</b></a><nav>{menu.map((item) => <button type="button" key={item.label} className={active === item.label ? "active" : ""} onClick={() => setActive(item.label)}><i>{item.icon}</i>{item.label}</button>)}</nav><small className="localStatus">{saveOnDevice ? "この端末に保存中" : "保存しない"}</small></aside>
-    <section className="productMain"><header className="productHeader"><h1>{title[active]}</h1><button type="button" className="help" onClick={() => { setActive("業務を整理する"); setToast("選択肢を選ぶだけで整理できます"); }}>？</button></header>
-      {active === "ホーム" && <section className="homeView"><div className="homeHero"><span>{hasDraft ? "いま取り組むこと" : "はじめる"}</span><h2>{hasDraft ? current.title : "困っている仕事を、ひとつ。"}</h2><p>{hasDraft ? current.detail : "仕様書はいりません。"}</p><button type="button" onClick={() => setActive("業務を整理する")}>{hasDraft ? "続きを開く" : "業務を整理する"}<b>→</b></button></div><div className="homeGrid"><article><span>進み具合</span><strong>{saved ? "100" : hasDraft ? "60" : "0"}<i>%</i></strong></article><article><span>保存した相談</span><strong>{history.length}<i>件</i></strong></article><article><span>最初に整えること</span><strong className="word">{hasDraft ? current.label : "―"}</strong></article></div>{history.length > 0 && <button type="button" className="recent" onClick={() => setActive("相談履歴")}><span>最近の相談</span><b>{history[0].topic}</b><i>→</i></button>}</section>}
-      {active === "業務を整理する" && <section className="workView">
+    <section className="productMain"><header className="productHeader"><h1>{title[active]}</h1><button type="button" className="help" onClick={() => { setActive("相談する"); setToast("選択肢を選ぶだけで相談できます"); }}>？</button></header>
+      {active === "ホーム" && <section className="homeView"><div className="homeHero"><span>{hasDraft ? "いま決めること" : "はじめる"}</span><h2>{hasDraft ? current.title : "困っている仕事を、ひとつ。"}</h2><p>{hasDraft ? current.detail : "仕様書はいりません。"}</p><button type="button" onClick={() => setActive("相談する")}>{hasDraft ? "続きを開く" : "相談を始める"}<b>→</b></button></div><div className="homeGrid"><article><span>進み具合</span><strong>{saved ? "100" : hasDraft ? "60" : "0"}<i>%</i></strong></article><article><span>保存した相談</span><strong>{history.length}<i>件</i></strong></article><article><span>まずやること</span><strong className="word">{hasDraft ? current.label : "―"}</strong></article></div>{history.length > 0 && <button type="button" className="recent" onClick={() => setActive("相談履歴")}><span>最近の相談</span><b>{history[0].topic}</b><i>→</i></button>}</section>}
+      {active === "相談する" && <section className="workView">
         {!hasDraft && <div className="interview">
           <div className="interviewMeta"><span>{topic ? `質問 ${questionIndex + 1} / ${questions.length}` : "業務を選ぶ"}</span>{topic && <button type="button" onClick={goBack}>← 戻る</button>}</div>
           <div className="interviewProgress"><i style={{ width: `${topic ? ((questionIndex + 1) / questions.length) * 100 : 0}%` }} /></div>
           <p>{topic ? currentQuestion?.hint : "あてはまる仕事をひとつ選んでください。"}</p>
           <h2>{topic ? currentQuestion?.prompt : "今日、いちばん手間な仕事は？"}</h2>
           <div className="answerChoices">{topic ? currentQuestion?.options.map((option) => <button type="button" key={option} onClick={() => answerQuestion(option)}>{option}<b>→</b></button>) : Object.keys(questionSets).map((choice) => <button type="button" key={choice} onClick={() => startInterview(choice)}>{choice}<b>→</b></button>)}</div>
-          <small>選んだ内容をもとに、次に整える仕事を提案します。</small>
+          <small>選んだ内容をもとに、まずやることの候補をお伝えします。</small>
         </div>}
-        {hasDraft && <div className="suggestions"><div className="suggestionHeading"><div><span>ととのえAIからの整理案</span><h2>次に整える仕事を、比べて選べます。</h2></div><button type="button" className="restart" onClick={restart}>別の仕事を整理する</button></div><div className="taskList">{suggestions.map((item, index) => <button type="button" key={item.key} className={selected === index ? "task active" : "task"} onClick={() => { setSelected(index); setSaved(false); }}><small>{index === 0 ? "まず検討" : index === 1 ? "次の候補" : "あわせて検討"}</small><b>{item.title}</b><span>{item.detail}</span><i>{selected === index ? "✓" : "→"}</i></button>)}</div><div className="next"><div><span>選択中の案</span><b>{current.estimate}</b></div><button type="button" onClick={() => { setSaved(true); setToast("進め方を確認しました"); }}>進め方を見る　→</button></div>{saved && <div className="plan"><b>01　流れを見る</b><b>02　項目を絞る</b><b>03　{current.outcome}</b></div>}</div>}
+        {hasDraft && <div className="suggestions"><div className="suggestionHeading"><div><span>今回の相談内容</span><h2>回答をもとに、まずやることをまとめました。</h2></div><button type="button" className="restart" onClick={restart}>別の相談をする</button></div><div className="answerSummary"><span>困っている仕事</span><b>{topic || "仕事の相談"}</b><p>{answerSummary.length ? answerSummary.join("　›　") : submitted}</p></div><div className="proposalLabel"><b>まずやることの候補</b><span>気になるものを選ぶと、進め方を確認できます。</span></div><div className="taskList">{suggestions.map((item, index) => <button type="button" key={item.key} className={selected === index ? "task active" : "task"} onClick={() => { setSelected(index); setSaved(false); }}><small>{index === 0 ? "最初の候補" : index === 1 ? "次の候補" : "あわせて検討"}</small><b>{item.title}</b><span>{item.detail}</span><i>{selected === index ? "✓" : "→"}</i></button>)}</div><div className="next"><div><span>選択中の案</span><b>{current.estimate}</b></div><button type="button" onClick={() => { setSaved(true); setToast("進め方を確認しました"); }}>進め方を見る　→</button></div>{saved && <div className="plan"><b>01　流れを見る</b><b>02　項目を絞る</b><b>03　{current.outcome}</b></div>}</div>}
       </section>}
-      {active === "相談履歴" && <section className="historyView">{history.length ? <div className="historyList">{history.map((item) => <button type="button" key={item.id} onClick={() => open(item)}><span>{date(item.createdAt)}　{item.topic}</span><b>{item.issue}</b><i>→</i></button>)}</div> : <div className="empty"><i>◷</i><b>まだありません</b><button type="button" onClick={() => setActive("業務を整理する")}>業務を整理する　→</button></div>}</section>}
+      {active === "相談履歴" && <section className="historyView">{history.length ? <div className="historyList">{history.map((item) => <button type="button" key={item.id} onClick={() => open(item)}><span>{date(item.createdAt)}　{item.topic}</span><b>{item.issue}</b><i>→</i></button>)}</div> : <div className="empty"><i>◷</i><b>まだありません</b><button type="button" onClick={() => setActive("相談する")}>相談を始める　→</button></div>}</section>}
       {active === "設定" && <section className="settingsView"><div><span>データの保存</span><label className="switch"><b>この端末に保存する</b><input type="checkbox" checked={saveOnDevice} onChange={(event) => changeSaving(event.target.checked)} /><i></i></label></div><div><span>保存したデータ</span><button type="button" className="danger" onClick={clearAll}>すべて消去する</button></div></section>}
       {toast && <p className="toast" role="status">{toast}</p>}
     </section>
