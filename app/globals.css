@@ -117,3 +117,6 @@
 
 /* The brand subline is now Japanese, so it needs calmer letter spacing than the former English label. */
 .brand small{letter-spacing:.05em}
+
+/* The hero copy has intentional sentence breaks; never strand 「だけ。」 on its own line. */
+.heroTitle{font-size:clamp(46px,4vw,64px);line-height:1.24}.heroTitle span{display:block}.heroTitle span:first-child{font-size:.78em;white-space:nowrap}.heroTitle span+span{margin-top:.12em}@media(max-width:1250px){.heroTitle{font-size:clamp(47px,5.3vw,66px)}.heroTitle span:first-child{font-size:.82em}}@media(max-width:768px){.heroTitle{font-size:clamp(40px,10.3vw,52px);line-height:1.25}.heroTitle span:first-child{font-size:1em;white-space:normal}.heroTitle span+span{margin-top:.14em}}
